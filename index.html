@@ -8,26 +8,102 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar">
-        <button onclick="showScreen('home')">Start</button>
-        <button onclick="showScreen('quiz')">Quiz</button>
-        <button onclick="showScreen('settings')">Einstellungen</button>
-    </nav>
-
     <main>
-        <section id="home" class="screen active">
-            <h1>Willkommen</h1>
-            <p>Das ist die Startseite.</p>
+        <!-- Home Screen: Comic Pinguin auf Eisscholle mit Schnee-Animation -->
+        <section id="home" class="screen screen-home active">
+            <!-- Hamburger-Menü oben links -->
+            <button class="hamburger" onclick="showScreen('settings')" aria-label="Menü">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Lern-Button über dem Pinguin -->
+            <button class="btn-learn" onclick="showScreen('quiz')">Lernen</button>
+
+            <!-- Schnee-Animation: 15 Schneeflocken fallen nach unten -->
+            <div class="snowfall">
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+            </div>
+
+            <!-- Comic-Pinguin auf Eisscholle (klickbar navigiert zu "in Bearbeitung") - JETZT GRÖSSER UND BESSERES GESICHT -->
+            <div class="penguin-container" onclick="showScreen('building')">
+                <!-- Pinguin als SVG im Comic-Stil - VERBESSERTES GESICHT -->
+                <svg class="penguin" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Kopf (schwarz) -->
+                    <circle cx="50" cy="35" r="22" fill="#1a1a1a" stroke="#000" stroke-width="1.5"/>
+                    <!-- Bauch (weiß) -->
+                    <ellipse cx="50" cy="60" rx="18" ry="25" fill="#ffffff" stroke="#000" stroke-width="1.5"/>
+                    <!-- Wangen (rosa für freundlicheren Ausdruck) -->
+                    <circle cx="35" cy="38" r="6" fill="#ffb3ba" opacity="0.6"/>
+                    <circle cx="65" cy="38" r="6" fill="#ffb3ba" opacity="0.6"/>
+                    <!-- Auge links (besser detailliert) -->
+                    <ellipse cx="42" cy="32" rx="5" ry="4" fill="#ffffff" stroke="#000" stroke-width="1"/>
+                    <circle cx="43" cy="31" r="2.5" fill="#000"/>
+                    <circle cx="44" cy="30" r="0.8" fill="#ffffff"/>
+                    <!-- Auge rechts (besser detailliert) -->
+                    <ellipse cx="58" cy="32" rx="5" ry="4" fill="#ffffff" stroke="#000" stroke-width="1"/>
+                    <circle cx="57" cy="31" r="2.5" fill="#000"/>
+                    <circle cx="56" cy="30" r="0.8" fill="#ffffff"/>
+                    <!-- Schnabel (orange, freundlicher) -->
+                    <ellipse cx="50" cy="42" rx="4" ry="3" fill="#ff9800" stroke="#000" stroke-width="1"/>
+                    <ellipse cx="50" cy="45" rx="2" ry="1.5" fill="#ff6b35"/>
+                    <!-- Lächeln (kleine Kurve unter dem Schnabel) -->
+                    <path d="M 46 47 Q 50 49 54 47" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <!-- Flügel links -->
+                    <ellipse cx="35" cy="55" rx="8" ry="18" fill="#1a1a1a" stroke="#000" stroke-width="1.5"/>
+                    <!-- Flügel rechts -->
+                    <ellipse cx="65" cy="55" rx="8" ry="18" fill="#1a1a1a" stroke="#000" stroke-width="1.5"/>
+                    <!-- Füße (orange) -->
+                    <g stroke="#000" stroke-width="1.5" fill="#ff9800">
+                        <ellipse cx="42" cy="95" rx="5" ry="7"/>
+                        <ellipse cx="58" cy="95" rx="5" ry="7"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Eisscholle (blau-weiß, Comic-Stil) -->
+            <div class="ice-floe"></div>
         </section>
 
-        <section id="quiz" class="screen hidden">
+        <!-- Quiz Screen (später zu implementieren) -->
+        <section id="quiz" class="screen screen-quiz hidden">
+            <!-- Zurück-Button oben links -->
+            <button class="btn-back-quiz" onclick="showScreen('home')" aria-label="Zurück">
+                ←
+            </button>
+
             <h1>Quiz</h1>
             <p>Hier kommt das Spiel hin.</p>
         </section>
 
+        <!-- Einstellungen Screen -->
         <section id="settings" class="screen hidden">
             <h1>Einstellungen</h1>
             <p>Dark Mode etc.</p>
+        </section>
+
+        <!-- In Bearbeitung Screen - zeigt, wenn man auf Pinguin oder "Lernen" klickt -->
+        <section id="building" class="screen screen-building hidden">
+            <div class="building-content">
+                <h1>🔨 In Bearbeitung</h1>
+                <p>Diese Seite wird gerade für dich erstellt...</p>
+                <button class="btn-back" onclick="showScreen('home')">← Zurück</button>
+            </div>
         </section>
     </main>
 

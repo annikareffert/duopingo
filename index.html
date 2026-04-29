@@ -18,8 +18,11 @@
                 <span></span>
             </button>
 
-            <!-- Lern-Button über dem Pinguin -->
-            <button class="btn-learn" onclick="showScreen('quiz')">Lernen</button>
+            <!-- Buttons über dem Pinguin (symmetrisch angeordnet) -->
+            <div class="btn-container">
+                <button class="btn-learn" onclick="showScreen('library')">Bibliothek</button>
+                <button class="btn-learn" onclick="showScreen('quiz')">Lernen</button>
+            </div>
 
             <!-- Schnee-Animation: 15 Schneeflocken fallen nach unten -->
             <div class="snowfall">
@@ -83,12 +86,17 @@
         <!-- Quiz Screen (später zu implementieren) -->
         <section id="quiz" class="screen screen-quiz hidden">
             <!-- Zurück-Button oben links -->
-            <button class="btn-back-quiz" onclick="showScreen('home')" aria-label="Zurück">
+            <button class="btn-back-quiz" onclick="goBack()" aria-label="Zurück">
                 ←
             </button>
 
-            <h1>Quiz</h1>
-            <p>Hier kommt das Spiel hin.</p>
+            <h1>Lernen</h1>
+            <div class="quiz-modes">
+                <button class="btn-mode" onclick="showScreen('building')">Karteikarten</button>
+                <button class="btn-mode" onclick="showScreen('building')">Multiple Choice</button>
+                <button class="btn-mode" onclick="showScreen('building')">Übungsarbeit</button>
+                <button class="btn-mode" onclick="showScreen('building')">Spiel 1</button>
+            </div>
         </section>
 
         <!-- Einstellungen Screen -->
@@ -102,7 +110,122 @@
             <div class="building-content">
                 <h1>🔨 In Bearbeitung</h1>
                 <p>Diese Seite wird gerade für dich erstellt...</p>
-                <button class="btn-back" onclick="showScreen('home')">← Zurück</button>
+                <button class="btn-back" onclick="goBack()">← Zurück</button>
+            </div>
+        </section>
+
+        <!-- Bibliothek Screen -->
+        <section id="library" class="screen screen-library hidden">
+            <!-- Zurück-Button oben links -->
+            <button class="btn-back" onclick="goBack()">← Zurück</button>
+
+            <h1>Bibliothek</h1>
+            <div class="library-buttons">
+                <button class="btn-library btn-plus" onclick="showScreen('building')">➕ Neues Lernset</button>
+                <button class="btn-library" onclick="showScreen('building')">Mathe Grundlagen</button>
+                <button class="btn-library" onclick="showScreen('english-vocab')">Englisch Vokabeln</button>
+                <button class="btn-library" onclick="showScreen('building')">Geschichte</button>
+                <button class="btn-library" onclick="showScreen('building')">Naturwissenschaften</button>
+                <button class="btn-library" onclick="showScreen('building')">Programmieren</button>
+            </div>
+        </section>
+
+        <!-- Englisch Vokabeln Screen -->
+        <section id="english-vocab" class="screen screen-english-vocab hidden">
+            <!-- Zurück-Button oben links -->
+            <button class="btn-back" onclick="goBack()">← Zurück</button>
+
+            <h1>Englisch Vokabeln</h1>
+
+            <!-- Vokabel-Karten anstatt Tabelle -->
+            <div class="vocab-cards">
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Annoyed</div>
+                        <div class="german-word">genervt</div>
+                        <div class="category">Adjektiv</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Gefühl der Verärgerung oder Belästigung</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Dumb</div>
+                        <div class="german-word">dumm</div>
+                        <div class="category">Adjektiv</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Mangel an Intelligenz oder Klugheit</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Unfortunately</div>
+                        <div class="german-word">leider</div>
+                        <div class="category">Adverb</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Ausdruck des Bedauerns oder Unglücks</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Easy</div>
+                        <div class="german-word">leicht</div>
+                        <div class="category">Adjektiv</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Nicht schwierig oder einfach zu tun</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Long</div>
+                        <div class="german-word">lang, lange</div>
+                        <div class="category">Adjektiv</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Große Länge oder Dauer</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Horse back riding</div>
+                        <div class="german-word">das Reiten</div>
+                        <div class="category">Substantiv</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Sportart, bei der man auf einem Pferd reitet</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Speak</div>
+                        <div class="german-word">sprechen</div>
+                        <div class="category">Verb</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Kommunizieren durch Worte (Infinitiv)</div>
+                    </div>
+                </div>
+
+                <div class="vocab-card" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="english-word">Spoke</div>
+                        <div class="german-word">sprach</div>
+                        <div class="category">Verb</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="explanation">Vergangenheitsform von speak</div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

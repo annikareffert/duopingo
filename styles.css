@@ -91,6 +91,197 @@ main {
     box-shadow: none;
 }
 
+/* ========================
+   LIBRARY SCREEN - HELLBLAU
+   ======================== */
+.screen-library {
+    background: linear-gradient(180deg, var(--light-blue) 0%, #b0e0f0 100%);
+    color: #333;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-shadow: none;
+}
+
+/* ========================
+   ENGLISH VOCAB SCREEN - HELLBLAU
+   ======================== */
+.screen-english-vocab {
+    background: linear-gradient(180deg, var(--light-blue) 0%, #b0e0f0 100%);
+    color: #333;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-shadow: none;
+}
+
+/* Container für Library-Buttons */
+.library-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 40px;
+}
+
+/* Library-Buttons */
+.btn-library {
+    padding: 16px 24px;
+    background: var(--dark-blue);
+    color: white;
+    border: 4px solid #000;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.btn-library:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-library:active {
+    transform: translateY(1px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Plus-Button (oberster) */
+.btn-plus {
+    background: #ff6b35; /* Orange für Hervorhebung */
+    border-color: #cc5500;
+}
+
+/* Vokabel-Tabelle */
+.vocab-table {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.vocab-table th,
+.vocab-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.vocab-table th {
+    background: var(--dark-blue);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.vocab-table td {
+    color: #333;
+    font-size: 1rem;
+}
+
+.vocab-table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.vocab-table tr:hover {
+    background: #e3f2fd;
+}
+
+/* Vokabel-Karten */
+.vocab-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.vocab-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    perspective: 1000px;
+    height: 200px;
+    position: relative;
+}
+
+.vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+.vocab-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.vocab-card .card-front,
+.vocab-card .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.vocab-card .card-front {
+    background: var(--dark-blue);
+    color: white;
+}
+
+.vocab-card .card-back {
+    background: #ff6b35;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.vocab-card .english-word {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.vocab-card .german-word {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.vocab-card .category {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.vocab-card .explanation {
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.4;
+}
+
 /* Zurück-Button für Quiz-Seite */
 .btn-back-quiz {
     position: absolute;
@@ -150,11 +341,17 @@ main {
 
 /* Lern-Button: Dunkelblau Rechteck über dem Pinguin - JETZT 10x GRÖSSER und OBEN */
 /* Ursprünglich: padding: 12px 28px, font-size: 1.1rem → Jetzt viel größer */
-.btn-learn {
+.btn-container {
     position: absolute;
     top: 15%; /* Nach oben verschoben */
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    gap: 24px; /* Abstand zwischen den Buttons */
+    z-index: 50;
+}
+
+.btn-learn {
     padding: 24px 56px; /* 2x padding */
     background: var(--dark-blue);
     color: white;
@@ -163,18 +360,17 @@ main {
     font-size: 2.2rem; /* ~2x font-size */
     font-weight: bold;
     cursor: pointer;
-    z-index: 50;
     box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.25); /* 2x shadow */
     transition: all 0.2s;
 }
 
 .btn-learn:hover {
-    transform: translateX(-50%) translateY(-4px); /* 2x translate */
+    transform: translateY(-4px); /* 2x translate */
     box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.25); /* 2x shadow */
 }
 
 .btn-learn:active {
-    transform: translateX(-50%) translateY(2px); /* 2x translate */
+    transform: translateY(2px); /* 2x translate */
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25); /* 2x shadow */
 }
 

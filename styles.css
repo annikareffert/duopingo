@@ -204,82 +204,111 @@ main {
     background: #e3f2fd;
 }
 
-/* Vokabel-Karten */
-.vocab-cards {
+/* Vokabel-Karten Container */
+#vocab-cards-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 16px;
     width: 100%;
-    max-width: 800px;
+    max-width: 600px;
     margin-top: 20px;
 }
 
+/* Vokabel-Karten */
 .vocab-card {
     background: white;
     border-radius: 12px;
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    perspective: 1000px;
-    height: 200px;
-    position: relative;
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid #e0e0e0;
 }
 
 .vocab-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
 }
 
-.vocab-card.flipped {
-    transform: rotateY(180deg);
-}
-
-.vocab-card .card-front,
-.vocab-card .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
+/* Karteninhalt */
+.card-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    border-radius: 12px;
+    gap: 12px;
 }
 
-.vocab-card .card-front {
-    background: var(--dark-blue);
-    color: white;
+/* Kartenkopf: Begriff und Übersetzung */
+.card-header {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
 }
 
-.vocab-card .card-back {
+.card-term,
+.card-translation {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-term .label,
+.card-translation .label,
+.card-explanation .label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--dark-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-term .value,
+.card-translation .value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Erklärung */
+.card-explanation {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.card-explanation .value {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Lösch-Button */
+.btn-delete {
+    align-self: flex-end;
+    padding: 8px 12px;
     background: #ff6b35;
     color: white;
-    transform: rotateY(180deg);
-}
-
-.vocab-card .english-word {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.vocab-card .german-word {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    opacity: 0.9;
-}
-
-.vocab-card .category {
-    font-size: 1rem;
-    opacity: 0.8;
-}
-
-.vocab-card .explanation {
+    border: 2px solid #cc5500;
+    border-radius: 8px;
     font-size: 0.9rem;
-    text-align: center;
-    line-height: 1.4;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-delete:hover {
+    background: #e55a24;
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-delete:active {
+    transform: translateY(0px);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
 /* Zurück-Button für Quiz-Seite */
@@ -502,6 +531,76 @@ main {
 }
 
 /* ========================
+   FORMULAR ZUM HINZUFÜGEN VON KARTEN
+   ======================== */
+.vocab-form {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto 0;
+}
+
+.vocab-form h2 {
+    margin: 0 0 16px;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+}
+
+.vocab-form input,
+.vocab-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    color: #333;
+}
+
+.vocab-form input:focus,
+.vocab-form textarea:focus {
+    outline: none;
+    border-color: var(--dark-blue);
+    box-shadow: 0 0 0 3px rgba(26, 58, 82, 0.1);
+}
+
+.vocab-form textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
+.btn-add-card {
+    width: 100%;
+    padding: 12px;
+    background: #ff6b35;
+    color: white;
+    border: 2px solid #cc5500;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-add-card:hover {
+    background: #e55a24;
+    transform: translateY(-2px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-add-card:active {
+    transform: translateY(0px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* ========================
    Responsive Design
    ======================== */
 @media (max-width: 600px) {
@@ -534,5 +633,36 @@ main {
     .navbar button {
         flex: 1;
         min-width: 0;
+    }
+    
+    /* Responsive Kartenformular */
+    .vocab-form {
+        padding: 16px;
+    }
+    
+    /* Responsive Kartencontainer */
+    #vocab-cards-container {
+        max-width: 100%;
+        gap: 12px;
+    }
+    
+    /* Responsive Karten */
+    .vocab-card {
+        padding: 12px;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .card-term .value,
+    .card-translation .value {
+        font-size: 1rem;
+    }
+    
+    /* Responsive Schriftgrößen */
+    .card-explanation .value {
+        font-size: 0.9rem;
     }
 }

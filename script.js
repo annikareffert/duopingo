@@ -109,3 +109,145 @@ function renderCards() {
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 });
+
+/* ========================
+   KARTEIKARTEN-LERN-SYSTEM
+   ======================== */
+
+// Aktuelles Lernset und Tracking
+let currentFlashcardSet = [];
+let currentCardIndex = 0;
+let learningStats = {
+    correct: 0,
+    wrong: 0,
+    marked: new Set()
+};
+
+// Funktion: Starte Karteikarten-Lernen mit einem Set
+function startFlashcardLearning(setId, setTitle) {
+    // Nutze die vocabCards als Beispiel-Set
+    currentFlashcardSet = [...vocabCards];
+    
+    // Wenn keine Karten vorhanden, zeige eine Warnung
+    if (currentFlashcardSet.length === 0) {
+        alert('Dieses Set hat noch keine Karteikarten. Bitte fügen Sie zuerst Karten hinzu!');
+        return;
+    }
+    
+    // Zurücksetzen des Fortschritts
+    currentCardIndex = 0;
+    learningStats = {
+        correct: 0,
+        wrong: 0,
+        marked: new Set()
+    };
+    
+    // Setze den Titel
+    document.getElementById('flashcard-title').textContent = setTitle;
+    
+    // Zeige die erste Karte
+    showFlashcard();
+    
+    // Wechsle zum Lern-Screen
+    showScreen('flashcard-learn');
+}
+
+// Funktion: Zeige aktuelle Karteikarte
+function showFlashcard() {
+    if (currentCardIndex >= currentFlashcardSet.length) {
+        // Alle Karten durch - Zeige Zusammenfassung
+        showSummary();
+        return;
+    }
+    
+    const card = currentFlashcardSet[currentCardIndex];
+    
+    // Update Karteninhalte
+    document.getElementById('flashcard-front-text').textContent = card.english;
+    document.getElementById('flashcard-back-text').textContent = card.german;
+    
+    // Reset Flip-Status
+    const flashcard = document.getElementById('current-flashcard');
+    flashcard.classList.remove('flipped');
+    
+    // Update Fortschritt
+    document.getElementById('current-card-number').textContent = currentCardIndex + 1;
+    document.getElementById('total-cards').textContent = currentFlashcardSet.length;
+    
+    // Berechne Progress-Bar
+    const progress = ((currentCardIndex + 1) / currentFlashcardSet.length) * 100;
+    document.getElementById('progress-fill').style.width = progress + '%';
+    
+    // Update Mark-Button-Status
+    updateMarkButton();
+    
+    // Verstecke Zusammenfassung
+    document.getElementById('summary-section').classList.add('hidden');
+    document.querySelector('.flashcard-container').classList.remove('hidden');
+    document.querySelector('.flashcard-actions').classList.remove('hidden');
+}
+
+// Funktion: Drehe die Karteikarte um
+function flipCard() {
+    const flashcard = document.getElementById('current-flashcard');
+    flashcard.classList.toggle('flipped');
+}
+
+// Funktion: Markiere oder entmarkiere die aktuelle Karte
+function toggleMarkCard() {
+    const card = currentFlashcardSet[currentCardIndex];
+    const markBtn = document.getElementById('mark-btn');
+    
+    if (learningStats.marked.has(card.id)) {
+        // Entmarkieren
+        learningStats.marked.delete(card.id);
+        markBtn.classList.remove('marked');
+    } else {
+        // Markieren
+        learningStats.marked.add(card.id);
+        markBtn.classList.add('marked');
+    }
+}
+
+// Funktion: Aktualisiere Mark-Button Status
+function updateMarkButton() {
+    const card = currentFlashcardSet[currentCardIndex];
+    const markBtn = document.getElementById('mark-btn');
+    
+    if (learningStats.marked.has(card.id)) {
+        markBtn.classList.add('marked');
+    } else {
+        markBtn.classList.remove('marked');
+    }
+}
+
+// Funktion: Gehe zur nächsten Karte
+function nextCard(result) {
+    const card = currentFlashcardSet[currentCardIndex];
+    
+    // Tracking
+    if (result === 'correct') {
+        learningStats.correct++;
+    } else if (result === 'wrong') {
+        learningStats.wrong++;
+    }
+    
+    // Nächste Karte
+    currentCardIndex++;
+    showFlashcard();
+}
+
+// Funktion: Zeige Zusammenfassung
+function showSummary() {
+    // Verstecke Karteikarte und Buttons
+    document.querySelector('.flashcard-container').classList.add('hidden');
+    document.querySelector('.flashcard-actions').classList.add('hidden');
+    
+    // Zeige Zusammenfassung
+    document.getElementById('summary-section').classList.remove('hidden');
+    
+    // Aktualisiere Statistiken
+    document.getElementById('correct-count').textContent = learningStats.correct;
+    document.getElementById('wrong-count').textContent = learningStats.wrong;
+    document.getElementById('marked-count').textContent = learningStats.marked.size;
+}

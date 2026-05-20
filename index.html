@@ -92,7 +92,7 @@
 
             <h1>Lernen</h1>
             <div class="quiz-modes">
-                <button class="btn-mode" onclick="showScreen('building')">Karteikarten</button>
+                <button class="btn-mode" onclick="showScreen('flashcard-select')">Karteikarten</button>
                 <button class="btn-mode" onclick="showScreen('building')">Multiple Choice</button>
                 <button class="btn-mode" onclick="showScreen('building')">Übungsarbeit</button>
                 <button class="btn-mode" onclick="showScreen('building')">Spiel 1</button>
@@ -163,6 +163,87 @@
 
             <!-- Vokabel-Karten Container (wird mit JavaScript gefüllt) -->
             <div id="vocab-cards-container" class="vocab-cards"></div>
+        </section>
+
+        <!-- Karteikarten-Set Auswahl Screen -->
+        <section id="flashcard-select" class="screen screen-flashcard-select hidden">
+            <!-- Zurück-Button oben links -->
+            <button class="btn-back" onclick="goBack()">← Zurück</button>
+
+            <h1>Welches Set möchtest du lernen?</h1>
+            <div class="flashcard-sets">
+                <button class="btn-set" onclick="startFlashcardLearning('english-vocab', 'Englisch Vokabeln')">Englisch Vokabeln</button>
+                <button class="btn-set" onclick="startFlashcardLearning('building', 'Mathe Grundlagen')">Mathe Grundlagen</button>
+                <button class="btn-set" onclick="startFlashcardLearning('building', 'Geschichte')">Geschichte</button>
+                <button class="btn-set" onclick="startFlashcardLearning('building', 'Naturwissenschaften')">Naturwissenschaften</button>
+            </div>
+        </section>
+
+        <!-- Karteikarten-Lern Screen -->
+        <section id="flashcard-learn" class="screen screen-flashcard-learn hidden">
+            <!-- Zurück-Button oben links -->
+            <button class="btn-back" onclick="goBack()">← Zurück</button>
+
+            <div class="flashcard-header">
+                <h1 id="flashcard-title">Englisch Vokabeln</h1>
+                <div class="progress-info">
+                    <span id="current-card-number">1</span> / <span id="total-cards">5</span>
+                </div>
+            </div>
+
+            <!-- Fortschrittsbalken -->
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 20%;"></div>
+            </div>
+
+            <!-- Karteikarte (flipbar) -->
+            <div class="flashcard-container" onclick="flipCard()">
+                <div class="flashcard" id="current-flashcard">
+                    <div class="flashcard-front">
+                        <p class="flashcard-label">Vorderseite</p>
+                        <p id="flashcard-front-text" class="flashcard-text">Englisch</p>
+                        <p class="flashcard-hint">Tippen zum Umdrehen</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <p class="flashcard-label">Rückseite</p>
+                        <p id="flashcard-back-text" class="flashcard-text">Deutsch</p>
+                        <p class="flashcard-hint">Tippen zum Umdrehen</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aktions-Buttons: Kann ich / Nicht können / Markieren -->
+            <div class="flashcard-actions">
+                <button class="btn-action btn-wrong" onclick="nextCard('wrong')" title="Nicht können">
+                    ✗ Nicht können
+                </button>
+                <button class="btn-action btn-mark" onclick="toggleMarkCard()" id="mark-btn" title="Intensives Lernen">
+                    ⭐ Markieren
+                </button>
+                <button class="btn-action btn-correct" onclick="nextCard('correct')" title="Kann ich">
+                    ✓ Kann ich
+                </button>
+            </div>
+
+            <!-- Zusammenfassung am Ende -->
+            <div id="summary-section" class="summary-section hidden">
+                <h2>📊 Lernfortschritt</h2>
+                <div class="summary-stats">
+                    <div class="stat">
+                        <span class="stat-label">Können:</span>
+                        <span class="stat-value" id="correct-count">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Nicht können:</span>
+                        <span class="stat-value" id="wrong-count">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Markiert:</span>
+                        <span class="stat-value" id="marked-count">0</span>
+                    </div>
+                </div>
+                <button class="btn-summary" onclick="goBack()">← Zurück zur Auswahl</button>
+            </div>
         </section>
     </main>
 

@@ -121,13 +121,15 @@
 
             <h1>Bibliothek</h1>
             <div class="library-buttons">
-                <button class="btn-library btn-plus" onclick="showScreen('building')">➕ Neues Lernset</button>
+                <button class="btn-library btn-plus" onclick="showScreen('english-vocab')">➕ Englisch Vokabeln</button>
                 <button class="btn-library" onclick="showScreen('building')">Mathe Grundlagen</button>
-                <button class="btn-library" onclick="showScreen('english-vocab')">Englisch Vokabeln</button>
                 <button class="btn-library" onclick="showScreen('building')">Geschichte</button>
                 <button class="btn-library" onclick="showScreen('building')">Naturwissenschaften</button>
                 <button class="btn-library" onclick="showScreen('building')">Programmieren</button>
             </div>
+
+            <!-- Vokabel-Liste in der Bibliothek -->
+            <div id="library-vocab-list" class="library-vocab-list"></div>
         </section>
 
         <!-- Englisch Vokabeln Screen -->
@@ -196,6 +198,13 @@
                 <div id="progress-fill" class="progress-fill" style="width: 20%;"></div>
             </div>
 
+            <!-- Lernrichtung Button -->
+            <div class="flashcard-options">
+                <button class="btn-option" id="direction-btn" onclick="toggleLearningDirection()" title="Lernrichtung wechseln">
+                    🔄 Deutsch → Englisch
+                </button>
+            </div>
+
             <!-- Karteikarte (flipbar) -->
             <div class="flashcard-container" onclick="flipCard()">
                 <div class="flashcard" id="current-flashcard">
@@ -225,6 +234,16 @@
                 </button>
             </div>
 
+            <!-- Navigation Buttons: Zurück / Weiter -->
+            <div class="flashcard-navigation">
+                <button class="btn-nav btn-nav-prev" onclick="previousCard()" title="Vorherige Karte">
+                    ← Zurück
+                </button>
+                <button class="btn-nav btn-nav-next" onclick="nextCard('correct')" title="Nächste Karte">
+                    Weiter →
+                </button>
+            </div>
+
             <!-- Zusammenfassung am Ende -->
             <div id="summary-section" class="summary-section hidden">
                 <h2>📊 Lernfortschritt</h2>
@@ -242,6 +261,9 @@
                         <span class="stat-value" id="marked-count">0</span>
                     </div>
                 </div>
+                <button class="btn-summary" id="repeat-wrong-btn" onclick="repeatWrongCards()" style="display: none;">
+                    🔄 Falsche Karten wiederholen
+                </button>
                 <button class="btn-summary" onclick="goBack()">← Zurück zur Auswahl</button>
             </div>
         </section>
@@ -250,4 +272,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

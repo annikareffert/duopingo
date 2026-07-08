@@ -47,13 +47,25 @@ let vocabCards = [
 function deleteCard(cardId) {
     vocabCards = vocabCards.filter(card => card.id !== cardId);
     renderCards();
+    renderLibraryVocabList();
 }
 
 // Funktion zum Hinzufügen einer neuen Karteikarte
-function addCard() {
-    const english = document.getElementById('input-english').value.trim();
-    const german = document.getElementById('input-german').value.trim();
-    const explanation = document.getElementById('input-explanation').value.trim();
+function addCard(inputFormId = 'default') {
+    // Unterschiedliche Input-IDs für verschiedene Formulare
+    const englishInput = inputFormId === 'library' 
+        ? document.getElementById('library-input-english')
+        : document.getElementById('input-english');
+    const germanInput = inputFormId === 'library'
+        ? document.getElementById('library-input-german')
+        : document.getElementById('input-german');
+    const explanationInput = inputFormId === 'library'
+        ? document.getElementById('library-input-explanation')
+        : document.getElementById('input-explanation');
+    
+    const english = englishInput.value.trim();
+    const german = germanInput.value.trim();
+    const explanation = explanationInput.value.trim();
     
     if (!english || !german) {
         alert('Bitte fülle die Pflichtfelder aus: Englisch und Deutsch');
@@ -70,11 +82,13 @@ function addCard() {
     vocabCards.push(newCard);
     
     // Formularfelder leeren
-    document.getElementById('input-english').value = '';
-    document.getElementById('input-german').value = '';
-    document.getElementById('input-explanation').value = '';
+    englishInput.value = '';
+    germanInput.value = '';
+    explanationInput.value = '';
     
+    // Aktualisiere beide Ansichten wenn nötig
     renderCards();
+    renderLibraryVocabList();
 }
 
 // Funktion zum Rendern der Karteikarten
@@ -105,9 +119,34 @@ function renderCards() {
     `).join('');
 }
 
+// Funktion zum Rendern der Vokabeln in der Bibliothek
+function renderLibraryVocabList() {
+    const container = document.getElementById('library-vocab-list');
+    if (!container) return;
+    
+    if (vocabCards.length === 0) {
+        container.innerHTML = '<p class="no-vocab">Noch keine Vokabeln hinzugefügt</p>';
+        return;
+    }
+    
+    container.innerHTML = `
+        <h3>📚 Englisch Vokabeln (${vocabCards.length})</h3>
+        <ul class="vocab-list">
+            ${vocabCards.map(card => `
+                <li class="vocab-item">
+                    <span class="vocab-english">${card.english}</span>
+                    <span class="vocab-arrow">→</span>
+                    <span class="vocab-german">${card.german}</span>
+                </li>
+            `).join('')}
+        </ul>
+    `;
+}
+
 // Beim Start: Home-Screen anzeigen und Karteikarten rendern
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
+    renderLibraryVocabList();
 });
 
 /* ========================
@@ -123,10 +162,17 @@ let learningStats = {
     marked: new Set()
 };
 
+// Lernrichtung: 'en-de' (Englisch→Deutsch) oder 'de-en' (Deutsch→Englisch)
+let learningDirection = 'en-de';
+
+// Liste der Karten, die wiederholt werden sollen (die man nicht konnte)
+let cardsToRepeat = [];
+
 // Funktion: Starte Karteikarten-Lernen mit einem Set
 function startFlashcardLearning(setId, setTitle) {
     // Nutze die vocabCards als Beispiel-Set
     currentFlashcardSet = [...vocabCards];
+    cardsToRepeat = [];
     
     // Wenn keine Karten vorhanden, zeige eine Warnung
     if (currentFlashcardSet.length === 0) {
@@ -136,6 +182,7 @@ function startFlashcardLearning(setId, setTitle) {
     
     // Zurücksetzen des Fortschritts
     currentCardIndex = 0;
+    learningDirection = 'en-de'; // Setze auf Standard
     learningStats = {
         correct: 0,
         wrong: 0,
@@ -162,9 +209,16 @@ function showFlashcard() {
     
     const card = currentFlashcardSet[currentCardIndex];
     
-    // Update Karteninhalte
-    document.getElementById('flashcard-front-text').textContent = card.english;
-    document.getElementById('flashcard-back-text').textContent = card.german;
+    // Update Karteninhalte basierend auf Lernrichtung
+    if (learningDirection === 'en-de') {
+        // Englisch → Deutsch (Standard)
+        document.getElementById('flashcard-front-text').textContent = card.english;
+        document.getElementById('flashcard-back-text').textContent = card.german;
+    } else {
+        // Deutsch → Englisch
+        document.getElementById('flashcard-front-text').textContent = card.german;
+        document.getElementById('flashcard-back-text').textContent = card.english;
+    }
     
     // Reset Flip-Status
     const flashcard = document.getElementById('current-flashcard');
@@ -230,11 +284,21 @@ function nextCard(result) {
         learningStats.correct++;
     } else if (result === 'wrong') {
         learningStats.wrong++;
+        // Markiere Karten, die falsch beantwortet wurden, zur Wiederholung
+        cardsToRepeat.push(card.id);
     }
     
     // Nächste Karte
     currentCardIndex++;
     showFlashcard();
+}
+
+// Funktion: Gehe zur vorherigen Karte
+function previousCard() {
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
+        showFlashcard();
+    }
 }
 
 // Funktion: Zeige Zusammenfassung
@@ -250,4 +314,51 @@ function showSummary() {
     document.getElementById('correct-count').textContent = learningStats.correct;
     document.getElementById('wrong-count').textContent = learningStats.wrong;
     document.getElementById('marked-count').textContent = learningStats.marked.size;
+    
+    // Zeige Wiederholen-Button wenn es Karten zum Wiederholen gibt
+    const repeatBtn = document.getElementById('repeat-wrong-btn');
+    if (cardsToRepeat.length > 0) {
+        repeatBtn.classList.remove('hidden');
+        repeatBtn.textContent = `🔄 ${cardsToRepeat.length} falsche Karten wiederholen`;
+    } else {
+        if (repeatBtn) repeatBtn.classList.add('hidden');
+    }
+}
+
+// Funktion: Starte Wiederholung der falschen Karten
+function repeatWrongCards() {
+    // Filtere nur die Karten, die falsch waren
+    currentFlashcardSet = vocabCards.filter(card => cardsToRepeat.includes(card.id));
+    
+    // Zurücksetzen des Fortschritts für Wiederholung
+    currentCardIndex = 0;
+    learningStats = {
+        correct: 0,
+        wrong: 0,
+        marked: new Set()
+    };
+    cardsToRepeat = [];
+    
+    // Zeige die erste Karte
+    showFlashcard();
+}
+
+// Funktion: Schalte die Lernrichtung um
+function toggleLearningDirection() {
+    if (learningDirection === 'en-de') {
+        learningDirection = 'de-en';
+    } else {
+        learningDirection = 'en-de';
+    }
+    
+    // Aktualisiere Button-Text
+    const directionBtn = document.getElementById('direction-btn');
+    if (directionBtn) {
+        directionBtn.textContent = learningDirection === 'en-de' 
+            ? '🔄 Deutsch → Englisch' 
+            : '🔄 Englisch → Deutsch';
+    }
+    
+    // Zeige die aktuelle Karte neu mit neuer Richtung
+    showFlashcard();
 }

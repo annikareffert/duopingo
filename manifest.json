@@ -1,0 +1,29 @@
+{
+    "name": "Pingolingo",
+    "short_name": "Pingo",
+
+    "description": "Pingolingo - eine einfache Lern-App",
+
+    "start_url": "./index.html",
+
+    "scope": "./",
+
+    "display": "standalone",
+
+    "orientation": "portrait",
+
+    "background_color": "#87ceeb",
+
+    "theme_color": "#87ceeb",
+
+
+    "icons": [
+        {
+          "src": "./icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml",
+          "purpose": "any maskable"
+        }
+      ]
+
+}

@@ -207,6 +207,34 @@ document.addEventListener('DOMContentLoaded', () => {
     renderLearningSetsList();
 });
 
+function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+        console.warn('Dieser Browser unterstützt Service Worker nicht.');
+        return;
+    }
+
+    const isSecureContext = window.location.protocol === 'https:' ||
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1';
+
+    if (!isSecureContext) {
+        console.warn('Service Worker braucht HTTPS oder localhost. Bitte die App über einen lokalen Web-Server starten.');
+        return;
+    }
+
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registriert:', registration.scope);
+            })
+            .catch(error => {
+                console.error('Service Worker konnte nicht registriert werden:', error);
+            });
+    });
+}
+
+registerServiceWorker();
+
 /* ========================
    KARTEIKARTEN-LERN-SYSTEM
    ======================== */
